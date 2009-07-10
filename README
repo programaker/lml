@@ -1,0 +1,3 @@
+"""LML - Lazy Markup Language"""
+
+An Ioke DSL to build html/xml docs with less verbose syntax
