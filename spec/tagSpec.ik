@@ -28,14 +28,14 @@ describe(Tag,
     it("should render inner tags",
         expected = FileSystem readFully("fixtures/spec6")
     
-        Tag mimic html(
-        
+        tag = Tag mimic html(
             Tag mimic head(
                 Tag mimic title("Lazy Markup Language")
             ),
             
             Tag mimic body("Empty")
-            
-        ) asText should == expected
+        ) 
+        
+        tag asText should == expected
     )
 )
