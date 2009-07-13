@@ -1,5 +1,4 @@
 Tag = Origin mimic do(
-    ;;content = ""
     name = nil
     attributes = nil
     innerTags = nil
@@ -16,25 +15,18 @@ Tag = Origin mimic do(
             @attributes = tagAttributes
             @innerTags = tagValues select(tag?)
             @value = (tagValues - innerTags) first
+            
             @            
         )
-    
-        ;;tag = currentMessage name
-        
-        ;;@content += unless(tagValues empty?,
-            ;;"<%s%:[ %s=\"%s\"%]>\n    %[%s%]\n</%s>\n" format(tag, tagAttributes, tagValues, tag),
-            ;;"<%s%:[ %s=\"%s\"%]/>\n" format(tag, tagAttributes)
-        ;;)
     )
     
     increaseIndentations = method(
         selfIndentationLevel++
         innerIndentationLevel++
+        innerTags each(increaseIndentations)
     )
     
     asText = method(
-        ;;content
-        
         indentation = " " * 4
         selfIndentation = indentation * selfIndentationLevel
         innerIndentation = indentation * innerIndentationLevel
@@ -49,14 +41,18 @@ Tag = Origin mimic do(
         )
         
         formatInnerTags = fnx(
-            innerTags each(tag, tag increaseIndentations)            
+            innerTags each(increaseIndentations)            
             "%s<%s%:[ %s=\"%s\"%]>\n%[%s%]\n%s</%s>\n" format(selfIndentation, name, attributes, innerTags, selfIndentation, name)
         )
         
-        cond(
+        result = cond(
             !(value nil?), formatValue,
             !(innerTags empty?), formatInnerTags,
             formatSingleTag
         )
+        
+        ;; i don't know why, but a \n\n aways appears after the last inner tags
+        ;; this workaround solves the problem =P
+        result replace(#/\n\n/, "\n")
     )
 )

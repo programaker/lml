@@ -1,0 +1,11 @@
+<beans>
+    <bean id="foo" class="com.acme.FooImpl">
+        <property name="id" value="82"/>
+    </bean>
+    <bean id="bar" class="com.acme.BarImpl">
+        <property name="foo" ref="foo"/>
+        <property name="quux">
+            <bean class="com.acme.QuuxImpl"/>
+        </property>
+    </bean>
+</beans>

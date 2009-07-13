@@ -38,4 +38,24 @@ describe(Tag,
         
         tag asText should == expected
     )
+    
+    it("should render inner tags with attributes",
+        expected = FileSystem readFully("fixtures/spec7")
+        
+        tag = Tag mimic beans(
+            Tag mimic bean(id: "foo", class: "com.acme.FooImpl",
+                Tag mimic property(name: "id", value: "82")
+            ),
+            
+            Tag mimic bean(id: "bar", class: "com.acme.BarImpl",
+                Tag mimic property(name: "foo", ref: "foo"),
+                
+                Tag mimic property(name: "quux",
+                    Tag mimic bean(class: "com.acme.QuuxImpl")
+                )
+            )
+        )
+        
+        tag asText should == expected
+    )
 )
