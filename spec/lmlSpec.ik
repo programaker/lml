@@ -91,4 +91,15 @@ describe("lml",
             )
         ) asText should == expected
     )
+    
+    it("should replace '_' by '-' in message name to render tags with '-' in the name",
+        expected = FileSystem readFully("fixtures/minusSignTags")
+    
+        beans(
+            bean(id: "foo", class: "com.acme.FooImpl",
+                constructor_arg(index: "0", type: "java.lang.Integer", value: "82"),
+                constructor_arg(index: "1", type: "java.lang.String", value: "lerolero")
+            )
+        ) asText should == expected
+    )
 )

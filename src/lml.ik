@@ -1,6 +1,10 @@
 pass = method(+:tagAttributes, +tagValues,
     tag = Origin mimic    
-    tag name = currentMessage name
+    
+    ;; an attempt to call replaceAll directly on 'currentMessage name' causes a weird error o.O
+    ;; this workaround solves the problem!
+    tag name = "#{currentMessage name}" replaceAll("_", "-")  
+    
     tag attributes = tagAttributes
     tag value = tagValues select(kind == "Text") first
     tag innerTags = tagValues select(kind != "Text")
@@ -45,8 +49,8 @@ pass = method(+:tagAttributes, +tagValues,
             )
             
             ;; i don't know why, but a \n\n aways appears after the last inner tags
-            ;; this workaround solves the problem =P
-            result replace(#/\n\n/, "\n")
+            ;; this workaround solves the problem!
+            result replaceAll(#/\n\n/, "\n")
         )
         
         save = method(filename,
