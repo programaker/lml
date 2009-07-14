@@ -77,4 +77,18 @@ describe("lml",
         result = FileSystem readFully("fixtures/out.xml")
         result should == expected
     )
+    
+    it("should render tags with ':' in the name, like JSP taglibs",
+        expected = FileSystem readFully("fixtures/jspTags")
+    
+        c:choose(
+            c:when(test: "${foo.a > quux.b}",
+                c:out(value: "${foo.a}")
+            ),
+            
+            c:otherwise(
+                c:out(value: "${quux.b}")
+            )
+        ) asText should == expected
+    )
 )

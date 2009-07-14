@@ -26,12 +26,16 @@ pass = method(+:tagAttributes, +tagValues,
             
             formatValue = fnx(
                 indentedValue = innerIndentation + value
-                "%s<%s%:[ %s=\"%s\"%]>\n%s\n%s</%s>\n" format(selfIndentation, name, attributes, indentedValue, selfIndentation, name)
+                
+                "%s<%s%:[ %s=\"%s\"%]>\n%s\n%s</%s>\n" format(
+                    selfIndentation, name, attributes, indentedValue, selfIndentation, name)
             )
             
             formatInnerTags = fnx(
                 innerTags each(increaseIndentations)            
-                "%s<%s%:[ %s=\"%s\"%]>\n%[%s%]\n%s</%s>\n" format(selfIndentation, name, attributes, innerTags, selfIndentation, name)
+                
+                "%s<%s%:[ %s=\"%s\"%]>\n%[%s%]\n%s</%s>\n" format(
+                    selfIndentation, name, attributes, innerTags, selfIndentation, name)
             )
             
             result = cond(
