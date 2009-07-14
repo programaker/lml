@@ -28,21 +28,22 @@ describe("lml",
     it("should render inner tags",
         expected = FileSystem readFully("fixtures/innerTag")
     
-        tag = html(
+        html(
+            
             head(
                 title("Lazy Markup Language")
             ),
             
             body("Empty")
-        ) 
-        
-        tag asText should == expected
+            
+        ) asText should == expected
     )
     
     it("should render inner tags with attributes",
         expected = FileSystem readFully("fixtures/innerTagAttributes")
         
-        tag = beans(
+        beans(
+            
             bean(id: "foo", class: "com.acme.FooImpl",
                 property(name: "id", value: "82")
             ),
@@ -54,8 +55,7 @@ describe("lml",
                     bean(class: "com.acme.QuuxImpl")
                 )
             )
-        )
-        
-        tag asText should == expected
+            
+        ) asText should == expected
     )
 )
