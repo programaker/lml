@@ -7,12 +7,12 @@ describe("t",
     )
     
     it("should render empty tags",
-        expected = FileSystem readFully("fixtures/spec2")
+        expected = FileSystem readFully("fixtures/emptyTag")
         t html("") asText should == expected
     )
     
     it("should render tags with content",
-        expected = FileSystem readFully("fixtures/spec3")
+        expected = FileSystem readFully("fixtures/tagWithContent")
         t title("Lazy Markup Language") asText should == expected
     )
     
@@ -21,12 +21,12 @@ describe("t",
     )
     
     it("should render empty tags with attributes",
-        expected = FileSystem readFully("fixtures/spec5")
+        expected = FileSystem readFully("fixtures/tagWithAttributes")
         t bean(id: "fooBean", "") asText should == expected
     )
     
     it("should render inner tags",
-        expected = FileSystem readFully("fixtures/spec6")
+        expected = FileSystem readFully("fixtures/innerTag")
     
         tag = t html(
             t head(
@@ -40,7 +40,7 @@ describe("t",
     )
     
     it("should render inner tags with attributes",
-        expected = FileSystem readFully("fixtures/spec7")
+        expected = FileSystem readFully("fixtures/innerTagAttributes")
         
         tag = t beans(
             t bean(id: "foo", class: "com.acme.FooImpl",
