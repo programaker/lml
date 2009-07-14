@@ -1,36 +1,20 @@
-Tag = Origin mimic do(
-    name = nil
-    attributes = nil
-    innerTags = nil
-    value = nil
-    selfIndentationLevel = 0
-    innerIndentationLevel = 1
+pass = method(+:tagAttributes, +tagValues,
+    tag = Origin mimic
     
-    define = method(name, +:tagAttributes, +tagValues,
-        let(
-            Origin tag?, false,
-            Tag tag?, true,
-            
-            @name = name
-            @attributes = tagAttributes
-            @innerTags = tagValues select(tag?)
-            @value = (tagValues - innerTags) first
-            
-            @            
-        )
-    )
-
-    pass = method(+:tagAttributes, +tagValues,
-        define(currentMessage name, *tagAttributes, *tagValues)
-    )
+    tag name = currentMessage name
+    tag attributes = tagAttributes
+    tag value = tagValues select(kind == "Text") first
+    tag innerTags = tagValues select(kind != "Text")
+    tag selfIndentationLevel = 0
+    tag innerIndentationLevel = 1
     
-    increaseIndentations = method(
+    tag increaseIndentations = method(
         selfIndentationLevel++
         innerIndentationLevel++
         innerTags each(increaseIndentations)
     )
     
-    asText = method(
+    tag asText = method(
         indentation = " " * 4
         selfIndentation = indentation * selfIndentationLevel
         innerIndentation = indentation * innerIndentationLevel
@@ -59,7 +43,6 @@ Tag = Origin mimic do(
         ;; this workaround solves the problem =P
         result replace(#/\n\n/, "\n")
     )
+    
+    tag
 )
-
-;; a shortcut for Tag creation
-t = method(Tag mimic)
