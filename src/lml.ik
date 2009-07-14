@@ -5,19 +5,23 @@ Tag = Origin mimic do(
     value = nil
     selfIndentationLevel = 0
     innerIndentationLevel = 1
-
-    pass = method(+:tagAttributes, +tagValues,
+    
+    define = method(name, +:tagAttributes, +tagValues,
         let(
             Origin tag?, false,
             Tag tag?, true,
             
-            @name = currentMessage name
+            @name = name
             @attributes = tagAttributes
             @innerTags = tagValues select(tag?)
             @value = (tagValues - innerTags) first
             
             @            
         )
+    )
+
+    pass = method(+:tagAttributes, +tagValues,
+        define(currentMessage name, *tagAttributes, *tagValues)
     )
     
     increaseIndentations = method(
@@ -56,3 +60,6 @@ Tag = Origin mimic do(
         result replace(#/\n\n/, "\n")
     )
 )
+
+;; a shortcut for Tag creation
+t = method(Tag mimic)

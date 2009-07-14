@@ -1,39 +1,39 @@
 use("ispec")
-use("../src/tag")
+use("../src/lml")
 
-describe(Tag,
+describe("t",
     it("should render single tags",
-        Tag mimic html asText should == "<html/>\n"
+        t html asText should == "<html/>\n"
     )
     
     it("should render empty tags",
         expected = FileSystem readFully("fixtures/spec2")
-        Tag mimic html("") asText should == expected
+        t html("") asText should == expected
     )
     
     it("should render tags with content",
         expected = FileSystem readFully("fixtures/spec3")
-        Tag mimic title("Lazy Markup Language") asText should == expected
+        t title("Lazy Markup Language") asText should == expected
     )
     
     it("should render single tags with attributes",
-        Tag mimic bean(id: "fooBean") asText should == #[<bean id="fooBean"/>\n]
+        t bean(id: "fooBean") asText should == #[<bean id="fooBean"/>\n]
     )
     
     it("should render empty tags with attributes",
         expected = FileSystem readFully("fixtures/spec5")
-        Tag mimic bean(id: "fooBean", "") asText should == expected
+        t bean(id: "fooBean", "") asText should == expected
     )
     
     it("should render inner tags",
         expected = FileSystem readFully("fixtures/spec6")
     
-        tag = Tag mimic html(
-            Tag mimic head(
-                Tag mimic title("Lazy Markup Language")
+        tag = t html(
+            t head(
+                t title("Lazy Markup Language")
             ),
             
-            Tag mimic body("Empty")
+            t body("Empty")
         ) 
         
         tag asText should == expected
@@ -42,16 +42,16 @@ describe(Tag,
     it("should render inner tags with attributes",
         expected = FileSystem readFully("fixtures/spec7")
         
-        tag = Tag mimic beans(
-            Tag mimic bean(id: "foo", class: "com.acme.FooImpl",
-                Tag mimic property(name: "id", value: "82")
+        tag = t beans(
+            t bean(id: "foo", class: "com.acme.FooImpl",
+                t property(name: "id", value: "82")
             ),
             
-            Tag mimic bean(id: "bar", class: "com.acme.BarImpl",
-                Tag mimic property(name: "foo", ref: "foo"),
+            t bean(id: "bar", class: "com.acme.BarImpl",
+                t property(name: "foo", ref: "foo"),
                 
-                Tag mimic property(name: "quux",
-                    Tag mimic bean(class: "com.acme.QuuxImpl")
+                t property(name: "quux",
+                    t bean(class: "com.acme.QuuxImpl")
                 )
             )
         )
