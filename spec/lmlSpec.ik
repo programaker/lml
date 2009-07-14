@@ -29,13 +29,13 @@ describe("lml",
         expected = FileSystem readFully("fixtures/innerTag")
     
         html(
-            
             head(
                 title("Lazy Markup Language")
             ),
             
-            body("Empty")
-            
+            body(
+                "Empty"
+            )
         ) asText should == expected
     )
     
@@ -43,7 +43,6 @@ describe("lml",
         expected = FileSystem readFully("fixtures/innerTagAttributes")
         
         beans(
-            
             bean(id: "foo", class: "com.acme.FooImpl",
                 property(name: "id", value: "82")
             ),
@@ -55,7 +54,27 @@ describe("lml",
                     bean(class: "com.acme.QuuxImpl")
                 )
             )
-            
         ) asText should == expected
+    )
+    
+    it("should save the generated document to a file",
+        expected = FileSystem readFully("fixtures/innerTagAttributes")
+        
+        beans(
+            bean(id: "foo", class: "com.acme.FooImpl",
+                property(name: "id", value: "82")
+            ),
+            
+            bean(id: "bar", class: "com.acme.BarImpl",
+                property(name: "foo", ref: "foo"),
+                
+                property(name: "quux",
+                    bean(class: "com.acme.QuuxImpl")
+                )
+            )
+        ) save("fixtures/out.xml")
+        
+        result = FileSystem readFully("fixtures/out.xml")
+        result should == expected
     )
 )
