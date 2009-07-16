@@ -102,4 +102,26 @@ describe("lml",
             )
         ) asText should == expected
     )
+    
+    it("should render default xml header",
+        expected = FileSystem readFully("fixtures/xmlHeader")
+        
+        xml(
+            web_app(
+                display_name("FooWeb"),
+                welcome_file_list(welcome_file("main.jsp"))
+            )
+        ) asText should == expected
+    )
+    
+    it("should render especified xml header",
+        expected = FileSystem readFully("fixtures/especifiedXmlHeader")
+        
+        xml(version: "0.9", encoding: "ISO-8859-1",
+            web_app(
+                display_name("FooWeb"),
+                welcome_file_list(welcome_file("main.jsp"))
+            )
+        ) asText should == expected
+    )
 )

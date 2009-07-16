@@ -1,3 +1,25 @@
+saveToFileMethod = syntax(
+    ''(method(filename,
+        FileSystem withOpenFile(filename, fn(file, file print(asText)))
+    ))
+)
+
+Document = Origin mimic do(
+    header = ""
+    rootTag = nil
+    
+    initialize = method(header, rootTag,
+        @header = header
+        @rootTag = rootTag
+    )
+    
+    asText = method(
+        "#{header}\n\n#{rootTag}"
+    )
+    
+    save = saveToFileMethod
+)
+
 pass = method(+:tagAttributes, +tagValues,
     tag = Origin mimic    
     
@@ -53,8 +75,10 @@ pass = method(+:tagAttributes, +tagValues,
             result replaceAll(#/\n\n/, "\n")
         )
         
-        save = method(filename,
-            FileSystem withOpenFile(filename, fn(file, file print(asText)))
-        )
+        save = saveToFileMethod
     )
+)
+
+xml = method(tag, version: "1.0", encoding: "UTF-8",
+    Document mimic(#[<?xml version="#{version}" encoding="#{encoding}"?>], tag)
 )
