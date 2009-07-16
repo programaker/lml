@@ -79,6 +79,25 @@ pass = method(+:tagAttributes, +tagValues,
     )
 )
 
-xml = method(tag, version: "1.0", encoding: "UTF-8",
-    Document mimic(#[<?xml version="#{version}" encoding="#{encoding}"?>], tag)
+
+;; xml support
+xml = method(rootTag, version: "1.0", encoding: "UTF-8",
+    Document mimic(#[<?xml version="#{version}" encoding="#{encoding}"?>], rootTag)
+)
+
+
+;; jsp support
+taglib = method(uri:, prefix:,
+    #[<%@taglib uri="#{uri}" prefix="#{prefix}"%>\n]
+)
+
+jsp = method(contentType: "text/html;charset=UTF-8", +taglibsAndRootTag,
+    rootTag = taglibsAndRootTag[-1]
+    taglibs = taglibsAndRootTag[0..-2]
+
+    page = #[<%@page language="java" contentType="#{contentType}"%>]
+    taglibImports = if(taglibs empty?, "", "\n\n%[%s%]" format(taglibs))
+    header = page + taglibImports
+
+    Document mimic(header, rootTag)
 )

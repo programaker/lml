@@ -124,4 +124,52 @@ describe("lml",
             )
         ) asText should == expected
     )
+    
+    it("should render default jsp header",
+        expected = FileSystem readFully("fixtures/jspHeader")
+        
+        jsp(
+            c:choose(
+                c:when(test: "${foo.a > quux.b}",
+                    c:out(value: "${foo.a}")
+                ),
+                
+                c:otherwise(
+                    c:out(value: "${quux.b}")
+                )
+            )
+        ) asText should == expected
+    )
+    
+    it("should render jsp header with especified contentType",
+        expected = FileSystem readFully("fixtures/especifiedJspHeader")
+        
+        jsp(contentType: "text/xml",
+            c:choose(
+                c:when(test: "${foo.a > quux.b}",
+                    c:out(value: "${foo.a}")
+                ),
+                
+                c:otherwise(
+                    c:out(value: "${quux.b}")
+                )
+            )
+        ) asText should == expected
+    )
+    
+    it("should render jsp with taglib imports",
+        expected = FileSystem readFully("fixtures/jspTaglibs")
+        
+        jsp(
+            taglib(uri: "http://java.sun.com/jsp/jstl/core", prefix: "c"),
+            taglib(uri: "http://java.sun.com/jsp/jstl/functions", prefix: "fn"),
+            
+            ul(c:forEach(items: "${list}", var: "item",
+                c:choose(
+                    c:when(test: "${item.a > 140}", li("${fn:substring(item.a, 0, 140)}")),
+                    c:otherwise(li("${item.a}"))
+                )
+            ))
+        ) asText should == expected
+    )
 )
