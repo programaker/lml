@@ -88,7 +88,7 @@ xml = method(rootTag, version: "1.0", encoding: "UTF-8",
 
 ;; jsp support
 taglib = method(uri:, prefix:,
-    #[<%@taglib uri="#{uri}" prefix="#{prefix}"%>\n]
+    #[<%@taglib uri="#{uri}" prefix="#{prefix}"%>]
 )
 
 jsp = method(contentType: "text/html;charset=UTF-8", +taglibsAndRootTag,
@@ -96,8 +96,8 @@ jsp = method(contentType: "text/html;charset=UTF-8", +taglibsAndRootTag,
     taglibs = taglibsAndRootTag[0..-2]
 
     page = #[<%@page language="java" contentType="#{contentType}"%>]
-    taglibImports = if(taglibs empty?, "", "\n\n%[%s%]" format(taglibs))
-    header = page + taglibImports
+    taglibImports = if(taglibs empty?, "", "\n\n" + taglibs join("\n"))
+    header = "#{page}#{taglibImports}"
 
     Document mimic(header, rootTag)
 )
