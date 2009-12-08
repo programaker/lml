@@ -21,7 +21,7 @@ Document = Origin mimic do(
 
 Tag = Origin mimic do(
     name = ""
-    attributes = []
+    attributes = {}
     value = ""
     innerTags = []
     
