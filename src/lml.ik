@@ -102,12 +102,9 @@ taglib = method(uri:, prefix:,
 )
 
 jsp = method(contentType: "text/html;charset=UTF-8", +taglibsAndRootTag,
-    ;;rootTag = taglibsAndRootTag[-1]
-    taglibs = taglibsAndRootTag[0..-2]
-
     page = #[<%@page language="java" contentType="#{contentType}"%>]
+    taglibs = taglibsAndRootTag[0..-2]
     taglibImports = if(taglibs empty?, "", "\n\n" + taglibs join("\n"))
-    ;;header = "#{page}#{taglibImports}"
 
     Document mimic(
         header: "#{page}#{taglibImports}", 
