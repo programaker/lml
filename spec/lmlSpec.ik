@@ -58,6 +58,8 @@ describe("lml",
     )
     
     it("should save the generated document to a file",
+        outFile = "fixtures/out.xml";
+        if(FileSystem exists?(outFile), FileSystem removeFile!(outFile))
         expected = FileSystem readFully("fixtures/innerTagAttributes")
         
         beans(
@@ -72,9 +74,9 @@ describe("lml",
                     bean(class: "com.acme.QuuxImpl")
                 )
             )
-        ) save("fixtures/out.xml")
+        ) save(outFile)
         
-        result = FileSystem readFully("fixtures/out.xml")
+        result = FileSystem readFully(outFile)
         result should == expected
     )
     
