@@ -71,7 +71,10 @@ Tag = Origin mimic do(
 
 pass = method(+:tagAttributes, +tagValues,
     Tag with(
+        ;; an attempt to call replaceAll directly on 'currentMessage name' causes a weird error o.O
+        ;; this workaround solves the problem!
         name: "#{currentMessage name}" replaceAll("_", "-"),
+        
         attributes: tagAttributes,
         value: tagValues select(kind == "Text") first,
         innerTags: tagValues select(kind != "Text")
