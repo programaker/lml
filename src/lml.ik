@@ -9,7 +9,7 @@ Document = Origin mimic do(
     rootTag = nil
     save = saveToFileMethod
     
-    initialize = method(header, rootTag,
+    initialize = method(header:, rootTag:,
         @header = header
         @rootTag = rootTag
     )
@@ -92,7 +92,7 @@ pass = method(+:tagAttributes, +tagValues,
 
 ;; xml support
 xml = method(rootTag, version: "1.0", encoding: "UTF-8",
-    Document mimic(#[<?xml version="#{version}" encoding="#{encoding}"?>], rootTag)
+    Document mimic(header: #[<?xml version="#{version}" encoding="#{encoding}"?>], rootTag: rootTag)
 )
 
 
@@ -102,12 +102,15 @@ taglib = method(uri:, prefix:,
 )
 
 jsp = method(contentType: "text/html;charset=UTF-8", +taglibsAndRootTag,
-    rootTag = taglibsAndRootTag[-1]
+    ;;rootTag = taglibsAndRootTag[-1]
     taglibs = taglibsAndRootTag[0..-2]
 
     page = #[<%@page language="java" contentType="#{contentType}"%>]
     taglibImports = if(taglibs empty?, "", "\n\n" + taglibs join("\n"))
-    header = "#{page}#{taglibImports}"
+    ;;header = "#{page}#{taglibImports}"
 
-    Document mimic(header, rootTag)
+    Document mimic(
+        header: "#{page}#{taglibImports}", 
+        rootTag: taglibsAndRootTag[-1]
+    )
 )
