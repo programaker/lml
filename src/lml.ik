@@ -24,9 +24,17 @@ Tag = Origin mimic do(
     attributes = []
     value = ""
     innerTags = []
+    
     selfIndentationLevel = 0
     innerIndentationLevel = 1
     save = saveToFileMethod
+    
+    initialize = method(name:, attributes:, value:, innerTags:,
+        @name = name
+        @attributes = attributes
+        @value = value
+        @innerTags = innerTags
+    )
     
     increaseIndentations = method(
         selfIndentationLevel++
@@ -70,7 +78,7 @@ Tag = Origin mimic do(
 )
 
 pass = method(+:tagAttributes, +tagValues,
-    Tag with(
+    Tag mimic(
         ;; an attempt to call replaceAll directly on 'currentMessage name' causes a weird error o.O
         ;; this workaround solves the problem!
         name: "#{currentMessage name}" replaceAll("_", "-"),
