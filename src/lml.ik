@@ -1,5 +1,6 @@
 saveToFileMethod = syntax(
     ''(method(filename,
+        if(FileSystem exists?(filename), FileSystem removeFile!(filename))
         FileSystem withOpenFile(filename, fn(file, file print(asText)))
     ))
 )

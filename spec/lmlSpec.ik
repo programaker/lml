@@ -58,8 +58,7 @@ describe("lml",
     )
     
     it("should save the generated document to a file",
-        outFile = "fixtures/out.xml";
-        if(FileSystem exists?(outFile), FileSystem removeFile!(outFile))
+        outFile = "fixtures/out.xml"
         expected = FileSystem readFully("fixtures/innerTagAttributes")
         
         beans(
