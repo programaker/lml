@@ -7,12 +7,12 @@ describe("lml",
     )
     
     it("should render empty tags",
-        expected = FileSystem readFully("fixtures/emptyTag")
+        expected = FileSystem readFully("examples/emptyTag")
         html("") asText should == expected
     )
     
     it("should render tags with content",
-        expected = FileSystem readFully("fixtures/tagWithContent")
+        expected = FileSystem readFully("examples/tagWithContent")
         title("Lazy Markup Language") asText should == expected
     )
     
@@ -21,12 +21,12 @@ describe("lml",
     )
     
     it("should render empty tags with attributes",
-        expected = FileSystem readFully("fixtures/tagWithAttributes")
+        expected = FileSystem readFully("examples/tagWithAttributes")
         bean(id: "fooBean", "") asText should == expected
     )
     
     it("should render inner tags",
-        expected = FileSystem readFully("fixtures/innerTag")
+        expected = FileSystem readFully("examples/innerTag")
     
         html(
             head(
@@ -40,7 +40,7 @@ describe("lml",
     )
     
     it("should render inner tags with attributes",
-        expected = FileSystem readFully("fixtures/innerTagAttributes")
+        expected = FileSystem readFully("examples/innerTagAttributes")
         
         beans(
             bean(id: "foo", class: "com.acme.FooImpl",
@@ -58,9 +58,8 @@ describe("lml",
     )
     
     it("should save the generated document to a file",
-        outFile = "fixtures/out.xml";
-        if(FileSystem exists?(outFile), FileSystem removeFile!(outFile))
-        expected = FileSystem readFully("fixtures/innerTagAttributes")
+        outFile = "examples/out.xml";
+        expected = FileSystem readFully("examples/innerTagAttributes")
         
         beans(
             bean(id: "foo", class: "com.acme.FooImpl",
@@ -78,10 +77,11 @@ describe("lml",
         
         result = FileSystem readFully(outFile)
         result should == expected
+        FileSystem removeFile!(outFile)
     )
     
     it("should render tags with ':' in the name, like JSP taglibs",
-        expected = FileSystem readFully("fixtures/jspTags")
+        expected = FileSystem readFully("examples/jspTags")
     
         c:choose(
             c:when(test: "${foo.a > quux.b}",
@@ -95,7 +95,7 @@ describe("lml",
     )
     
     it("should replace '_' by '-' in message name to render tags with '-' in the name",
-        expected = FileSystem readFully("fixtures/minusSignTags")
+        expected = FileSystem readFully("examples/minusSignTags")
     
         beans(
             bean(id: "foo", class: "com.acme.FooImpl",
@@ -106,7 +106,7 @@ describe("lml",
     )
     
     it("should render default xml header",
-        expected = FileSystem readFully("fixtures/xmlHeader")
+        expected = FileSystem readFully("examples/xmlHeader")
         
         xml(
             web_app(
@@ -117,7 +117,7 @@ describe("lml",
     )
     
     it("should render especified xml header",
-        expected = FileSystem readFully("fixtures/especifiedXmlHeader")
+        expected = FileSystem readFully("examples/especifiedXmlHeader")
         
         xml(version: "0.9", encoding: "ISO-8859-1",
             web_app(
@@ -128,7 +128,7 @@ describe("lml",
     )
     
     it("should render default jsp header",
-        expected = FileSystem readFully("fixtures/jspHeader")
+        expected = FileSystem readFully("examples/jspHeader")
         
         jsp(
             c:choose(
@@ -144,7 +144,7 @@ describe("lml",
     )
     
     it("should render jsp header with especified contentType",
-        expected = FileSystem readFully("fixtures/especifiedJspHeader")
+        expected = FileSystem readFully("examples/especifiedJspHeader")
         
         jsp(contentType: "text/xml",
             c:choose(
@@ -160,7 +160,7 @@ describe("lml",
     )
     
     it("should render jsp with taglib imports",
-        expected = FileSystem readFully("fixtures/jspTaglibs")
+        expected = FileSystem readFully("examples/jspTaglibs")
         
         jsp(
             taglib(uri: "http://java.sun.com/jsp/jstl/core", prefix: "c"),

@@ -1,0 +1,6 @@
+<beans>
+    <bean id="foo" class="com.acme.FooImpl">
+        <constructor-arg index="0" type="java.lang.Integer" value="82"/>
+        <constructor-arg index="1" type="java.lang.String" value="lerolero"/>
+    </bean>
+</beans>
