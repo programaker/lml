@@ -6,69 +6,70 @@ saveToFileMethod = syntax(
 )
 
 Document = Origin mimic do(
-    header = ""
-    rootTag = nil
-    save = saveToFileMethod
+    _header = ""
+    _rootTag = nil
     
     initialize = method(header:, rootTag:,
-        @header = header
-        @rootTag = rootTag
+        @_header = header
+        @_rootTag = rootTag
     )
     
+    save = saveToFileMethod
+    
     asText = method(
-        "#{header}\n\n#{rootTag}"
+        "#{_header}\n\n#{_rootTag}"
     )
 )
 
 Tag = Origin mimic do(
-    name = ""
-    attributes = {}
-    value = ""
-    innerTags = []
-    
-    selfIndentationLevel = 0
-    innerIndentationLevel = 1
-    save = saveToFileMethod
+    _name = ""
+    _attributes = {}
+    _value = ""
+    _innerTags = []    
+    _selfIndentationLevel = 0
+    _innerIndentationLevel = 1
     
     initialize = method(name:, attributes:, value:, innerTags:,
-        @name = name
-        @attributes = attributes
-        @value = value
-        @innerTags = innerTags
+        @_name = name
+        @_attributes = attributes
+        @_value = value
+        @_innerTags = innerTags
     )
     
-    increaseIndentations = method(
-        selfIndentationLevel++
-        innerIndentationLevel++
-        innerTags each(increaseIndentations)
+    _increaseIndentations = method(
+        _selfIndentationLevel++
+        _innerIndentationLevel++
+        _innerTags each(_increaseIndentations)
     )
+    
+    save = saveToFileMethod
     
     asText = method(
         indentation = " " * 4
-        selfIndentation = indentation * selfIndentationLevel
-        innerIndentation = indentation * innerIndentationLevel
+        selfIndentation = indentation * _selfIndentationLevel
+        innerIndentation = indentation * _innerIndentationLevel
         
         formatSingleTag = fnx(
-            "%s<%s%:[ %s=\"%s\"%]/>\n" format(selfIndentation, name, attributes)
+            "%s<%s%:[ %s=\"%s\"%]/>\n" format(selfIndentation, _name, _attributes)
         )        
         
         formatValue = fnx(
-            indentedValue = innerIndentation + value
+            indentedValue = innerIndentation + _value
             
             "%s<%s%:[ %s=\"%s\"%]>\n%s\n%s</%s>\n" format(
-                selfIndentation, name, attributes, indentedValue, selfIndentation, name)
+                selfIndentation, _name, _attributes, indentedValue, selfIndentation, _name)
         )
         
         formatInnerTags = fnx(
-            innerTags each(increaseIndentations)            
+            _innerTags each(_increaseIndentations)            
             
             "%s<%s%:[ %s=\"%s\"%]>\n%[%s%]\n%s</%s>\n" format(
-                selfIndentation, name, attributes, innerTags, selfIndentation, name)
+                selfIndentation, _name, _attributes, _innerTags, selfIndentation, _name)
         )
         
         result = cond(
-            !(value nil?), formatValue,
-            !(innerTags empty?), formatInnerTags,
+            !(_value nil?), formatValue,
+            !(_innerTags empty?), formatInnerTags,
             formatSingleTag
         )
         
